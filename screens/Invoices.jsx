@@ -8,11 +8,15 @@ import InvoiceItem from "../components/InvoiceItem";
 import Statusbar from "../components/Statusbar";
 import Header from "../components/Header";
 
+import { useDispatch, useSelector } from "react-redux";
+import { updateInvoices } from "../redux/actions/InvoiceActions";
+
 const listInvoices = listOfInvoices.listOfInvoices;
 const dummyInv = dummyInvoice.dummyInvoice;
 
 export default function Invoices() {
-  const [invoices, setInvoices] = useState(listInvoices);
+  const invoices = useSelector((state) => state.Invoice.invoices);
+  const dispatch = useDispatch();
 
   /**
    * The on add function, triggers when user swipes the list and presses delete button
@@ -21,7 +25,7 @@ export default function Invoices() {
   function onDelete(index) {
     const copyInvoices = invoices?.slice();
     copyInvoices.splice(index, 1);
-    setInvoices(copyInvoices);
+    dispatch(updateInvoices(copyInvoices));
   }
 
   /**
@@ -30,8 +34,9 @@ export default function Invoices() {
   function onAdd() {
     const copyInvoices = invoices.slice();
     copyInvoices.push(dummyInv);
-    setInvoices(copyInvoices);
+    dispatch(updateInvoices(copyInvoices));
   }
+
   return (
     <View style={styles.container}>
       <Statusbar backgroundColor="#fff" barStyle="dark-content" />
